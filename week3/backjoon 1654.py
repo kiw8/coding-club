@@ -5,6 +5,7 @@ def get_count(lines, length):
     total = 0  # 총 개수 누적 변수
     for line in lines:
         # 해당 랜선을 length 길이로 잘랐을 때 몇 개 나오는지 계산
+        # ex) line=802, length=200이면 802 // 200 = 4 (4개 만들 수 있음)
         total += line // length
     return total  # 누적된 개수 반환
 
