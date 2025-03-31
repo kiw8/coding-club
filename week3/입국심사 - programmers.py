@@ -8,6 +8,9 @@ def solution(n, times):
         mid = (start + end) // 2  # 현재 시간 후보 (중간값)
         people = 0  # 총 인원 누적 변수
 
+
+
+
         # 각 심사관이 mid 시간 동안 몇 명을 심사할 수 있는지 계산
         for i in times:
             people += mid // i  # mid 시간 동안 i초 걸리는 심사관이 처리할 수 있는 사람 수
