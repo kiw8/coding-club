@@ -1,50 +1,37 @@
 # 입력 받기
-n = int(input())                     # 사용자로부터 N 입력 받음
+n = int(input())                     # 사용자로부터 체스판의 크기 N을 입력받음
 
-def n_queen(n):
-    count = 0                        # 가능한 해의 수를 저장할 변수
-    board = [-1] * n                 # 아직 퀸이 아무 행에도 배치 되지 않았음을 표시 하기 위해
-                                     # -1은 유효하지 않은 열 인덱스니까, 초기화 값으로 적절함
+def n_queen(n):   # n_queen() 함수 정의
+    count = 0                        # 배치 가능한 모든 퀸의 경우의 수를 저장할 변수
+    board = [-1] * n                 # -1을 사용해서 아직 퀸이 아무 행에도 배치 되지 않았음을 표시 하기 위해
 
-    # 현재 행(row)에 열(col)에 퀸을 놓을 수 있는지 검사
-    def is_safe(row, col):                                  # row : 행, col : 열
-        for prev in range(row):                             # 현재 퀸을 놓으려는 위치가 안전한지 검사하기 위한 문장, prev : 이전에 퀸을 배치한 행 번호.
-            # 같은 열에 퀸이 있으면 안 됨                          range(row)는 0부터 row-1번째 까지 반복하니까 지금까지 퀸이 배치된 행동들을 의미한다.
-            if board[prev] == col:                          # prev 번째 행에 놓인 퀸의 열 위치를 의미함
-                return False                                # 같은 열에 퀸이 없으면 퀸을 놓고, 퀸이 있으면 false를 리턴시켜 백트래킹 상위로 돌아간다.
-                                                            # return 구문 뒤에 false를 두는 이유는 "퀸을 놓으려는 위치가 안전하지 않다"는 것을 즉시 알려주기 위해서이다.
-            # 같은 대각선에 퀸이 있으면 안 됨
-            if abs(board[prev] - col) == abs(prev - row):   # 절댓값(absolute)을 대각선으로 나타냄 이유는 절댓값을 사용안하고 행열 비교시 방향(+,-) 떄문에
-                return False                                # 오류가 날 수가 있기 때문에 절댓값을 사용하면 방향을 무시하고 정확히 대각선만으로 판단이 가능
-        return True
 
-    # 재귀적으로 퀸을 한 줄씩 배치해 나가는 함수
+    # 행(row)과 열(col)에 퀸을 놓을 수 있는지 확인
+    def is_safe(row, col):
+        for prev in range(row):                          # 이전 행들(0 ~ row-1)을 확인
+
+            if board[prev] == col:                          # board[prev]: 이전 행에 놓은 퀸의 열 번호
+                return False
+
+            if abs(board[prev] - col) == abs(prev - row):   # prev:이미 퀸을 놓은 행 번호 , 행차이=열차이:대각선 위에 있다는 뜻
+                return False
+        return True # 문제 없으면 안전한 위치
+
     def backtrack(row):
-        nonlocal count               # 이 구문을 써주는 이유는 이 구문을 무시하고 바로 count += 1을 넣으면
-                                     # count를 새로운 지역 변수로 만들려고 시도하는 행동이 간주가 되어 에러가 남
-                                     # 백트래킹은 count를 사용할때 지역 변수를 지정해주는 것이 아니라 바깥함수에 있는
-                                     # count를 사용해야 하기 떄문에, 무시하고 사용하면 unboundlocalerror 라는 에러가 남
-                                     # local은 현재 함수안에 있는 내부에서만 쓰는 함수이고 nonlocal은 바로 바깥 함수에서
-                                     # 선언된 변수를 참조해주는 중첩 함수용임
-                                     # global은 함수 바깥에 있는 전역 변수에 사용하는것, nonlocal은 함수 안의 바깥 함수에 있는 변수로 사용
+        nonlocal count  # 외부 변수 count 사용
 
-        # 모든 행에 퀸을 다 놓으면 해 하나를 찾은 것
-        if row == n:                 # 행을 n번째의 수로 지정
-            count += 1               # 백트래킹 안에서 퀸이 성공적으로 배치가 되면 해의 수를 세기 위해 하니씩 증감
+        if row == n:  # 퀸 n개를 모두 놓았다면
+            count += 1  # 경우의 수 1 증가
             return
 
-        # 현재 행의 각 열에 퀸을 놓아본다
-        for col in range(n):         #열을 0부터 n번째 까지 반복한다.
-            if is_safe(row, col):    # def에 있는 is_safe라는 변수명을 지정하고 행과 열을 구성
-                board[row] = col     # 퀸을 row행 col열에 놓는다
-                backtrack(row + 1)   # 다음 행으로 넘어간다 (재귀 호출)
-                board[row] = -1      # 퀸을 제거해서 이전 상태로 되돌림 (백트래킹)
-              # return               # 이 부분에 return을 쓰지 않은 이유는 return을 사용하면 열을 기준으로 하여 n번째 반복하는 과정이 멈추기 때문이다.
-                                     # return을 넣어버리게 되면 n번째의 경우의 수까지 찾고 루프를 멈추는게 아니라 첫번째의 경우에만 찾게 되어 루프를 멈추게 됨
-                                     # 사실 백트래킹이 모든 가능한 경우의 수를 찾아 그 경우의 수안에 답일 확률이 높은 곳으로 백트래킹하여 알고리즘을 탐색하게 되는데
-                                     # return을 사용하면 첫번째만 탐색하고 나머지는 버리게 되는 구도가 되버림
+        for col in range(n):  # 현재 행에서 가능한 모든 열 시도
+            if is_safe(row, col):  # 해당 위치가 안전하면
+                board[row] = col  # 퀸 배치
+                backtrack(row + 1)  # 다음 행으로 이동
+                board[row] = -1  # 배치 되돌리기 (백트래킹)
 
-    backtrack(0) # 첫 번째 행부터 시작
-    return count
+    backtrack(0)  # 0행부터 시작
+    return count  # 가능한 모든 경우의 수 반환
 
-print(n_queen(n))    # 가능한 방법의 수 출력
+
+print(n_queen(n))  # 정답 출력
