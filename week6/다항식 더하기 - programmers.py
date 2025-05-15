@@ -6,8 +6,8 @@ def solution(polynomial):
 
     for p in poly_list:
         if p[-1] == 'x':
-            if p[:-1]:
-                x += int(p[:-1])
+            if p[:-1]:  # 1이아닌 어떠한 x
+                x += int(p[:-1])  # x = x + 3
             else:
                 x += 1
         elif p.isdigit():  # isdigit(): 우리가 필요한 '순수정수'만 확실하게 골라내는 것

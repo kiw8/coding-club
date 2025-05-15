@@ -16,3 +16,4 @@ def solution(n, lost, reserve):
 
     # 전체 학생 수에서 체육복 못 받은 학생 수를 빼서 결과 리턴
     return n - len(lost_set)
+
