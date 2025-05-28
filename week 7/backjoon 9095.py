@@ -15,3 +15,4 @@ for i in range(4, 11):
 for i in range(0, n):
     testNum = int(input())       # 정답을 구할 정수 n 입력 받기
     print(arr[testNum])          # DP 테이블에서 해당 n값의 정답 출력
+

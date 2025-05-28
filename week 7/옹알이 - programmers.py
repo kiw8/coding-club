@@ -1,3 +1,5 @@
+from operator import truediv
+
 def solution(babbling):
     answer = 0
     for bab in babbling:
@@ -12,3 +14,4 @@ def solution(babbling):
             answer += 1
 
     return answer  # 조건을 만족하는 단어의 개수 반환
+
