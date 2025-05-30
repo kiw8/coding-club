@@ -1,5 +1,3 @@
-from operator import truediv
-
 def solution(babbling):
     answer = 0
     for bab in babbling:
@@ -15,3 +13,7 @@ def solution(babbling):
 
     return answer  # 조건을 만족하는 단어의 개수 반환
 
+if __name__ == "__main__":
+    test_input = ["aya", "yee", "u", "maa"]
+    result = solution(test_input)
+    print("결과:", result)
